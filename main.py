@@ -1,15 +1,26 @@
-"""Entry writer for real-life-patch-notes comedy changelog."""
+"""Patch-notes entry writer.
 
-from pathlib import Path
+Emits one real-life patch note as a single line to /output/entry.txt.
+Deterministic: same bytes every run, no trailing newline, no extra
+whitespace — the output is exactly the note, nothing else.
+"""
 
-ENTRY = "v2.4.1: Fixed a bug where the brain replayed embarrassing moments from 2009 at 3 AM instead of sleeping."
+import os
+
+NOTE = (
+    'v1.7.2: Fixed a bug where the mouth replied "you too" '
+    'when the waiter said "enjoy your meal."'
+)
+
+OUT_DIR = "/output"
+OUT_FILE = os.path.join(OUT_DIR, "entry.txt")
 
 
-def main():
-    target_path = Path("/output/entry.txt")
-    target_path.parent.mkdir(parents=True, exist_ok=True)
-    target_path.write_text(ENTRY, encoding="utf-8")
+def write_entry() -> None:
+    os.makedirs(OUT_DIR, exist_ok=True)
+    with open(OUT_FILE, "w", encoding="utf-8", newline="") as handle:
+        handle.write(NOTE)
 
 
 if __name__ == "__main__":
-    main()
+    write_entry()
